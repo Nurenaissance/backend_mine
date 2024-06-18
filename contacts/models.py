@@ -15,6 +15,7 @@ class Contact(models.Model):
     createdOn = models.DateTimeField("Created on", auto_now_add=True)
     isActive = models.BooleanField(default=False)
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    open_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.first_name
