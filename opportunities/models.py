@@ -4,6 +4,7 @@ from accounts.models import Account
 from contacts.models import Contact
 from django.conf import settings
 from tenant.models import Tenant 
+from stages.models import Stage
 STAGES = (
     ('QUALIFICATION', 'QUALIFICATION'),
     ('NEEDS ANALYSIS', 'NEEDS ANALYSIS'),
@@ -73,7 +74,7 @@ INDCHOICES = (
 class Opportunity(models.Model):
     name = models.CharField(max_length=64)
     account = models.ForeignKey(Account, related_name='opportunities', on_delete=models.CASCADE, blank=True, null=True)
-    stage = models.CharField( max_length=64, choices=STAGES)
+    stage = models.CharField( max_length=64, choices=STAGES,default='NEEDS ANALYSIS')
     amount = models.DecimalField("Opportunity Amount", decimal_places=2, max_digits=12, blank=True, null=True)
     lead_source = models.CharField("Source of Lead", max_length=255, choices=SOURCES, blank=True, null=True)
     probability = models.IntegerField(default=0, blank=True, null=True)
@@ -87,5 +88,3 @@ class Opportunity(models.Model):
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
     def __str__(self):
         return self.name
-
-

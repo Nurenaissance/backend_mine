@@ -51,6 +51,7 @@ from simplecrm import tracking as track
 from custom_fields import views as cfviews
 from simplecrm import tractcount as trac
 from tickets import views as tickview
+from stages import views as sview
 
 
 urlpatterns = [
@@ -114,5 +115,10 @@ urlpatterns = [
     path('track_open_count/', trac.TrackOpenCountView.as_view(), name='track_open_count'),
     path('tickets/', tickview.TicketListAPIView.as_view(), name='ticket-list'),
     path('tickets/<int:pk>/', tickview.TicketDetailAPIView.as_view(), name='ticket-detail'),
+   
+    path('stages/<str:model_name>/', sview.stage_list, name='stage_list'),
+    path('stages/create/', sview.stage_create, name='stage_create'),
+    path('stages/update/<int:stage_id>/', sview.stage_update, name='stage_update'),
+    path('stages/delete/<int:stage_id>/', sview.stage_delete, name='stage_delete'),
 ]
 
