@@ -3,6 +3,7 @@ from django.views import View
 from contacts import models as md  # Ensure this is the correct path to your Contact model
 import logging
 from django.db.models import F
+from django.db.models import F
 
 logger = logging.getLogger(__name__)
 
@@ -41,3 +42,20 @@ class TrackOpenCountView(View):
             return HttpResponse('Contact does not exist', status=404)
 
         return HttpResponse(f'Open count: {count}', content_type='text/plain')
+
+class TrackOpenCountView(View):
+    def get(self, request, contact_id, *args, **kwargs):
+        try:
+            contact = md.Contact.objects.get(id=contact_id)
+            contact.open_count = F('open_count') + 1
+            contact.save()
+            contact.refresh_from_db()  # Refresh the instance to get the updated open_count
+            count = contact.open_count
+            logger.debug(f"Contact {contact_id} open count incremented to {count}.")
+        except md.Contact.DoesNotExist:
+            logger.error(f"Contact does not exist for ID: {contact_id}")
+            return HttpResponse('Contact does not exist', status=404)
+
+        return HttpResponse(f'Open count: {count}', content_type='text/plain')
+
+        
